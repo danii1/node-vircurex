@@ -80,11 +80,6 @@ apiCallWithToken(command, key, params, callback)
 
 [Vircurex API Documentation](https://vircurex.com/welcome/api)
 
-## BTC-E API documentation
-
-  * Trade: https://btc-e.com/api/documentation
-  * Public: https://btc-e.com/page/2
-
 ## To do
 
   * Check callback token
