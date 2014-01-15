@@ -197,7 +197,9 @@ Vircurex.prototype.apiCallWithToken = function(command, key, params, callback) {
   var urlVars = ''
   params.forEach(function(v) {
     //if (typeof v[1] == 'string') v[1] = v[1].toUpperCase()
-    tokenItems.push(v[1])
+    // ability to skip including parameter in token generation as some functions inconsistent
+    if (!v[2])
+      tokenItems.push(v[1])
     urlVars+= '&'+v[0]+'='+v[1]
   })
   var url = this.apiUrl+command+'.json'+
@@ -395,11 +397,12 @@ Vircurex.prototype.releaseOrder = function(orderId, callback) {
  * @param {Integer} orderId
  * @param {Function} callback(err, data)
  */
-Vircurex.prototype.deleteOrder = function(orderId, callback) {
+Vircurex.prototype.deleteOrder = function(orderId, otype, callback) {
   this.apiCallWithToken(
     'delete_order',
     this.keys.deleteOrder,
-    [['orderid', orderId]],
+    [ ['orderid', orderId], 
+      ['otype', otype] ],
     callback
   )
 }
@@ -408,13 +411,15 @@ Vircurex.prototype.deleteOrder = function(orderId, callback) {
  * Returns order information
  *
  * @param {Integer} orderId
+ * @param {Integer} otype
  * @param {Function} callback(err, data)
  */
-Vircurex.prototype.readOrder = function(orderId, callback) {
+Vircurex.prototype.readOrder = function(orderId, otype, callback) {
   this.apiCallWithToken(
     'read_order',
     this.keys.readOrder,
-    [['orderid', orderId]],
+    [ ['orderid', orderId] ,
+      ['otype', otype, true] ],
     callback
   )
 }
@@ -423,14 +428,14 @@ Vircurex.prototype.readOrder = function(orderId, callback) {
  * Returns order information for all users' saved or released orders.
  * It does not return information on closed (either manually closed or closed due to order execution) or deleted orders.
  *
- * @param {Integer} orderId
+ * @param {Integer} otype
  * @param {Function} callback(err, data)
  */
-Vircurex.prototype.readOrders = function(callback) {
+Vircurex.prototype.readOrders = function(otype, callback) {
   this.apiCallWithToken(
     'read_orders',
     this.keys.readOrders,
-    [],
+    [['otype', otype, true]],
     callback
   )
 }
