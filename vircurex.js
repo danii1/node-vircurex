@@ -36,7 +36,7 @@ function Vircurex(username, keys) {
 
   //this.secret = secret
   //this.urlPost = ''
-  this.apiUrl = 'https://vircurex.com/api/'
+  this.apiUrl = 'https://api.vircurex.com/api/'
 }
 
 /**
