@@ -194,6 +194,9 @@ Vircurex.prototype.apiCallWithToken = function(command, key, params, callback) {
   var id = ++this.trxId
   var time = this.getTimeDate()
   var tokenItems = [key, this.username, time, id, command]
+  if (command == 'create_released_order')
+    tokenItems = [key, this.username, time, id, 'create_order']
+
   var urlVars = ''
   params.forEach(function(v) {
     //if (typeof v[1] == 'string') v[1] = v[1].toUpperCase()
@@ -387,6 +390,30 @@ Vircurex.prototype.releaseOrder = function(orderId, callback) {
     'release_order',
     this.keys.releaseOrder,
     [['orderid', orderId]],
+    callback
+  )
+}
+
+/**
+ * Creates a new order and release it for trading immediately. A maximum of 100 open orders are allowed at any point in time. 
+ * Values for ordertype: BUY, SELL
+ *
+ * @param {String} Type
+ * @param {Float} Amount
+ * @param {String} currency1
+ * @param {Float} unitPrice
+ * @param {String} currency2
+ * @param {Function} callback(err, data) 
+ */
+Vircurex.prototype.createReleasedOrder = function(type, amount, currency1, unitPrice, currency2, callback) {
+  this.apiCallWithToken(
+    'create_released_order',
+    this.keys.createOrder,
+    [ ['ordertype', type],
+      ['amount', amount],
+      ['currency1', currency1],
+      ['unitprice', unitPrice],
+      ['currency2', currency2] ],
     callback
   )
 }
